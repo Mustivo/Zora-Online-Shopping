@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /core/
+Disallow: /includes/
+Disallow: /temp_rwanda/
+Allow: /
+
+Sitemap: https://zora.infinityfreeapp.com/sitemap.xml

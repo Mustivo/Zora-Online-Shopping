@@ -1,0 +1,26 @@
+Options -MultiViews
+RewriteEngine On
+
+# Redirect external .php requests to extensionless urls (only for GET to preserve POST data)
+RewriteCond %{REQUEST_METHOD} GET
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^.]+)\.php [NC]
+RewriteRule ^ %1 [R=301,L,QSA]
+
+# Internally rewrite extensionless requests to .php files
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ $1.php [L,QSA]
+
+# Gzip compression
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/plain text/xml text/css application/javascript application/json
+</IfModule>
+
+# Disable aggressive caching for development so changes reflect immediately
+<IfModule mod_headers.c>
+  <FilesMatch "\.(css|js|php|html)$">
+    Header set Cache-Control "max-age=0, no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
+  </FilesMatch>
+</IfModule>
