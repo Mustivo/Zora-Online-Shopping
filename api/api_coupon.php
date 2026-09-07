@@ -1,5 +1,8 @@
 <?php
-require_once 'core/config.php';
+// require_once 'core/config.php';
+require_once dirname(__DIR__) . '/core/config.php';
+// require_once dirname(__DIR__) . '/includes/header.php';
+
 
 header('Content-Type: application/json');
 

@@ -1,9 +1,12 @@
 <?php
-require_once 'core/config.php';
+require_once dirname(__DIR__) . '/core/config.php';
+require_once dirname(__DIR__) . '/includes/header.php';
+
+// require_once 'core/config.php';
 $page_title = "Contact Us - Zora Shop Rwanda";
 $meta_desc = "Get in touch with Zora Shop Rwanda. We are here to help you with your orders, questions, and feedback. Contact us today!";
 $meta_keywords = "Contact Zora Shop, Zora Shop customer service, Rwanda online shopping contact";
-require_once 'includes/header.php';
+// require_once 'includes/header.php';
 
 $message_sent = false;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit_contact'])) {

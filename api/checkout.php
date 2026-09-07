@@ -1,6 +1,9 @@
 <?php
-require_once 'core/config.php';
-require_once 'includes/header.php';
+// require_once 'core/config.php';
+// require_once 'includes/header.php';
+require_once dirname(__DIR__) . '/core/config.php';
+require_once dirname(__DIR__) . '/includes/header.php';
+
 
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php?error=" . urlencode("Please login to access checkout."));

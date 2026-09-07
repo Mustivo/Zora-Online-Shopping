@@ -10,7 +10,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-require_once __DIR__ . '/core/config.php';
+// require_once __DIR__ . '/core/config.php';
+require_once dirname(__DIR__) . '/core/config.php';
+// require_once dirname(__DIR__) . '/includes/header.php';
+
 
 $action = isset($_GET['action']) ? $_GET['action'] : 'bootstrap';
 $base_upload_url = BASE_URL . 'uploads/';

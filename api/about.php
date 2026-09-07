@@ -1,12 +1,15 @@
 <?php
-require_once 'core/config.php';
+require_once dirname(__DIR__) . '../core/config.php';
+require_once '../core/config.php';
 $page_query = mysqli_query($conn, "SELECT * FROM pages WHERE slug = 'about' LIMIT 1");
 $custom_page = ($page_query && mysqli_num_rows($page_query) > 0) ? mysqli_fetch_assoc($page_query) : null;
 
 $page_title = (!empty($custom_page['title']) ? htmlspecialchars($custom_page['title']) : "About Us") . " - Zora Shop Rwanda";
 $meta_desc = "Learn more about Zora Shop Rwanda. We are dedicated to bringing you the best fashion, clothes, and accessories with top-notch customer service in Kigali.";
 $meta_keywords = "About Zora Shop, Fashion store Kigali, Clothing shop Rwanda";
-require_once 'includes/header.php';
+// require_once 'includes/header.php';
+require_once dirname(__DIR__) . '/includes/header.php';
+
 
 $banner_bg = (!empty($custom_page['banner_image']) && file_exists('uploads/' . $custom_page['banner_image'])) ? 'uploads/' . htmlspecialchars($custom_page['banner_image']) : 'uploads/about_hero.png';
 $eyebrow = !empty($custom_page['subtitle']) ? htmlspecialchars($custom_page['subtitle']) : __('our_story');
@@ -140,4 +143,4 @@ $has_custom_body = !empty($custom_page['content']) && trim($custom_page['content
   </div>
 </section>
 
-<?php require_once 'includes/footer.php'; ?>
+<?php require_once '../includes/footer.php'; ?>
