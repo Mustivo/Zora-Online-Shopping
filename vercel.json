@@ -1,33 +1,33 @@
 {
   "functions": {
-    "*.php": {
+    "api/*.php": {
       "runtime": "vercel-php@0.7.3"
     }
   },
   "routes": [
     {
       "src": "/api_app",
-      "dest": "api_app.php"
+      "dest": "api/api_app.php"
     },
     {
       "src": "/api_coupon",
-      "dest": "api_coupon.php"
+      "dest": "api/api_coupon.php"
     },
     {
       "src": "/api_load_products",
-      "dest": "api_load_products.php"
+      "dest": "api/api_load_products.php"
     },
     {
       "src": "/api_locations",
-      "dest": "api_locations.php"
+      "dest": "api/api_locations.php"
+    },
+    {
+      "src": "/(index|about|shop)",
+      "dest": "api/$1.php"
     },
     {
       "src": "/(.*)",
-      "dest": "$1.php",
-      "continue": true
-    },
-    {
-      "handle": "filesystem"
+      "dest": "api/index.php"
     }
   ]
-}               
+}
