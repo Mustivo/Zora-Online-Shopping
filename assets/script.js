@@ -6,6 +6,7 @@ function toggleCart() {
 }
 
 function openAuthModal() {
+<<<<<<< HEAD
     const modal = document.getElementById('authModal');
     if (modal) {
         modal.classList.add('open');
@@ -21,11 +22,19 @@ function closeAuthModal() {
         modal.classList.remove('open');
         modal.style.display = 'none';
     }
+=======
+    document.getElementById('authModal').classList.add('open');
+}
+
+function closeAuthModal() {
+    document.getElementById('authModal').classList.remove('open');
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 }
 
 function switchModalTab(tabId, btn) {
     document.querySelectorAll('.modal-tab-panel').forEach(p => p.classList.remove('active'));
     document.querySelectorAll('.modal-tab-btn').forEach(b => b.classList.remove('active'));
+<<<<<<< HEAD
     const targetTab = document.getElementById(tabId);
     if (targetTab) targetTab.classList.add('active');
     if (btn) btn.classList.add('active');
@@ -131,37 +140,65 @@ function showToast(msg, isError = false) {
         container.className = 'toast-container';
         document.body.appendChild(container);
     }
+=======
+    document.getElementById(tabId).classList.add('active');
+    btn.classList.add('active');
+}
+
+function showToast(msg, isError = false) {
+    const container = document.getElementById('toastContainer');
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     const toast = document.createElement('div');
     toast.className = `toast-msg ${isError ? 'error' : ''}`;
     toast.innerHTML = `<i class="fas ${isError ? 'fa-exclamation-circle' : 'fa-check-circle'} me-2"></i>${msg}`;
     container.appendChild(toast);
     setTimeout(() => {
         toast.remove();
+<<<<<<< HEAD
     }, 4000);
 }
 
 // Check URL params for messages (from actions.php redirects)
 window.addEventListener('DOMContentLoaded', () => {
+=======
+    }, 3000);
+}
+
+// Check URL params for messages (from actions.php redirects)
+window.onload = function() {
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     const urlParams = new URLSearchParams(window.location.search);
     const msg = urlParams.get('msg');
     const error = urlParams.get('error');
     if (msg) showToast(msg);
     if (error) showToast(error, true);
+<<<<<<< HEAD
     initThemeIcons();
 });
+=======
+};
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 
 function toggleWishlist(productId, element) {
     fetch('core/actions.php', {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+<<<<<<< HEAD
         body: 'action=toggle_wishlist&product_id=' + encodeURIComponent(productId)
+=======
+        body: 'action=toggle_wishlist&product_id=' + productId
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     })
     .then(response => response.json())
     .then(data => {
         if (data.status === 'error' && data.message === 'unauthorized') {
+<<<<<<< HEAD
             if (typeof openAuthModal === 'function') {
                 openAuthModal();
             }
+=======
+            openAuthModal();
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
         } else if (data.status === 'success') {
             if (data.action === 'added') {
                 element.classList.add('active');
@@ -174,6 +211,7 @@ function toggleWishlist(productId, element) {
     })
     .catch(err => console.error(err));
 }
+<<<<<<< HEAD
 
 function toggleChatPopup() {
     const chatPopup = document.getElementById('chatPopupWidget');
@@ -262,3 +300,5 @@ function togglePasswordVisibility(buttonOrId) {
     }
 }
 
+=======
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444

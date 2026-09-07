@@ -8,6 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $first_name = clean_input($conn, $_POST['first_name']);
         $last_name = clean_input($conn, $_POST['last_name']);
         $email = clean_input($conn, $_POST['email']);
+<<<<<<< HEAD
         $raw_password = $_POST['password'] ?? '';
         $confirm_password = $_POST['confirm_password'] ?? '';
         
@@ -30,20 +31,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $password = password_hash($raw_password, PASSWORD_DEFAULT);
+=======
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 
         // Check if email exists
         $check = mysqli_query($conn, "SELECT id FROM users WHERE email = '$email'");
         if (mysqli_num_rows($check) > 0) {
+<<<<<<< HEAD
             if (isset($_POST['ajax'])) {
                 echo json_encode(['status' => 'error', 'message' => 'Email already exists.']);
                 exit;
             }
+=======
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
             header("Location: ../index.php?error=" . urlencode("Email already exists."));
             exit;
         }
 
         $sql = "INSERT INTO users (first_name, last_name, email, password) VALUES ('$first_name', '$last_name', '$email', '$password')";
         if (mysqli_query($conn, $sql)) {
+<<<<<<< HEAD
             // Clear any previous guest cart
             unset($_SESSION['cart']);
 
@@ -79,6 +87,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(['status' => 'error', 'message' => 'Registration failed.']);
                 exit;
             }
+=======
+            $_SESSION['user_id'] = mysqli_insert_id($conn);
+            $_SESSION['first_name'] = $first_name;
+            $_SESSION['role'] = 'user';
+            header("Location: ../user_panel.php?msg=" . urlencode("Registration successful."));
+        } else {
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
             header("Location: ../index.php?error=" . urlencode("Registration failed."));
         }
         exit;
@@ -92,18 +107,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = mysqli_query($conn, $sql);
         if ($user = mysqli_fetch_assoc($result)) {
             if (password_verify($password, $user['password'])) {
+<<<<<<< HEAD
                 // Clear any previous guest cart so the logged-in user doesn't see what the guest added
                 unset($_SESSION['cart']);
 
+=======
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
                 $_SESSION['user_id'] = $user['id'];
                 $_SESSION['first_name'] = $user['first_name'];
                 $_SESSION['role'] = $user['role'];
                 
+<<<<<<< HEAD
                 if (isset($_POST['ajax'])) {
                     echo json_encode(['status' => 'success', 'message' => 'Login successful.', 'role' => $user['role']]);
                     exit;
                 }
                 
+=======
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
                 if ($user['role'] === 'admin') {
                     header("Location: ../admin/index.php?msg=" . urlencode("Welcome Admin!"));
                 } else {
@@ -112,11 +133,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 exit;
             }
         }
+<<<<<<< HEAD
         
         if (isset($_POST['ajax'])) {
             echo json_encode(['status' => 'error', 'message' => 'Invalid email or password.']);
             exit;
         }
+=======
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
         header("Location: ../index.php?error=" . urlencode("Invalid email or password."));
         exit;
     }
@@ -129,6 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = mysqli_query($conn, $sql);
         if ($user = mysqli_fetch_assoc($result)) {
             if (password_verify($password, $user['password'])) {
+<<<<<<< HEAD
                 if (in_array($user['role'], ['admin', 'store_manager', 'rider'])) {
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['first_name'] = $user['first_name'];
@@ -142,6 +167,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     exit;
                 } else {
                     header("Location: ../admin/login.php?error=" . urlencode("Access denied. Authorized personnel only."));
+=======
+                if ($user['role'] === 'admin') {
+                    $_SESSION['user_id'] = $user['id'];
+                    $_SESSION['first_name'] = $user['first_name'];
+                    $_SESSION['role'] = $user['role'];
+                    header("Location: ../admin/index.php?msg=" . urlencode("Welcome Admin!"));
+                    exit;
+                } else {
+                    header("Location: ../admin/login.php?error=" . urlencode("Access denied. Admin only."));
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
                     exit;
                 }
             }
@@ -150,6 +185,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
+<<<<<<< HEAD
     if ($action === 'forgot_password') {
         $email = clean_input($conn, $_POST['email']);
         
@@ -385,6 +421,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         if (!isset($_SESSION['cart']) || $action === 'buy_now') {
+=======
+    if ($action === 'add_to_cart') {
+        $product_id = (int)$_POST['product_id'];
+        $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+        $color = isset($_POST['color']) ? clean_input($conn, $_POST['color']) : '';
+
+        if (!isset($_SESSION['cart'])) {
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
             $_SESSION['cart'] = [];
         } else {
             // Upgrade old cart format if necessary
@@ -394,6 +438,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
 
+<<<<<<< HEAD
         $cart_key = $product_id . ($color !== '' ? '_' . $color : '') . ($size !== '' ? '_' . $size : '');
         
         $current_cart_qty = isset($_SESSION['cart'][$cart_key]) ? (int)$_SESSION['cart'][$cart_key]['quantity'] : 0;
@@ -434,10 +479,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($variant_custom_price !== null) {
                 $_SESSION['cart'][$cart_key]['custom_price'] = $variant_custom_price;
             }
+=======
+        $cart_key = $product_id . ($color !== '' ? '_' . $color : '');
+
+        if (isset($_SESSION['cart'][$cart_key])) {
+            $_SESSION['cart'][$cart_key]['quantity'] += $quantity;
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
         } else {
             $_SESSION['cart'][$cart_key] = [
                 'product_id' => $product_id,
                 'quantity' => $quantity,
+<<<<<<< HEAD
                 'color' => $color,
                 'size' => $size,
                 'custom_price' => $variant_custom_price,
@@ -637,6 +689,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } else {
             header("Location: ../user_panel.php?error=" . urlencode("Failed to remove order."));
         }
+=======
+                'color' => $color
+            ];
+        }
+
+        header("Location: ../cart_view.php?msg=" . urlencode("Product added to cart."));
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
         exit;
     }
 
@@ -658,6 +717,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         exit;
     }
+<<<<<<< HEAD
 
     if ($action === 'submit_review') {
         if (!isset($_SESSION['user_id'])) {
@@ -688,6 +748,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         exit;
     }
+=======
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 }
 
 // GET actions
@@ -697,10 +759,13 @@ if (isset($_GET['action'])) {
         header("Location: ../index.php?msg=" . urlencode("Logged out successfully."));
         exit;
     }
+<<<<<<< HEAD
     if ($_GET['action'] === 'admin_logout') {
         session_destroy();
         header("Location: ../admin/login.php?msg=" . urlencode("Logged out successfully."));
         exit;
     }
+=======
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 }
 ?>

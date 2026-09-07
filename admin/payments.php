@@ -1,5 +1,6 @@
 <?php
 require_once 'includes/header.php';
+<<<<<<< HEAD
 
 // Ensure payments table exists
 mysqli_query($conn, "CREATE TABLE IF NOT EXISTS payments (
@@ -235,4 +236,16 @@ $query = mysqli_query($conn, $sql);
     </div>
 </div>
 
+=======
+?>
+<div class="admin-header d-flex justify-content-between align-items-center mb-4">
+    <h2 class="admin-page-title">Payment Management</h2>
+</div>
+
+<div class="admin-card p-5 text-center mt-4">
+    <i class="fas fa-tools fa-4x text-muted mb-3" style="opacity: 0.5;"></i>
+    <h3 class="mt-3">Under Construction</h3>
+    <p class="text-muted">The Payment Management module is currently being built. Check back soon!</p>
+</div>
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 <?php require_once 'includes/footer.php'; ?>

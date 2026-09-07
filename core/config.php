@@ -1,5 +1,6 @@
 <?php
 // config.php
+<<<<<<< HEAD
 if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
@@ -15,6 +16,14 @@ $db_host = 'localhost';
 $db_user = 'root';
 $db_pass = '';
 $db_name = 'zora_shop';
+=======
+session_start();
+
+$db_host = 'localhost';
+$db_user = 'root';
+$db_pass = ''; // Default XAMPP password is empty
+$db_name = 'luxe_commerce';
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 
 // Create connection without database first to check/create it
 $conn = mysqli_connect($db_host, $db_user, $db_pass);
@@ -24,14 +33,21 @@ if (!$conn) {
 }
 
 // Create database if not exists
+<<<<<<< HEAD
 $sql = "CREATE DATABASE IF NOT EXISTS `$db_name`";
 if (mysqli_query($conn, $sql)) {
     mysqli_select_db($conn, $db_name);
     @mysqli_query($conn, "SET time_zone = '+02:00'");
+=======
+$sql = "CREATE DATABASE IF NOT EXISTS $db_name";
+if (mysqli_query($conn, $sql)) {
+    mysqli_select_db($conn, $db_name);
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 } else {
     die("Error creating database: " . mysqli_error($conn));
 }
 
+<<<<<<< HEAD
 // Language system
 if (isset($_GET['lang'])) {
     $allowed_langs = ['en', 'rw'];
@@ -85,6 +101,9 @@ if (!function_exists('get_setting')) {
     }
 }
 
+=======
+// Set charset
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 mysqli_set_charset($conn, "utf8mb4");
 
 // Auto-create tables if they don't exist
@@ -95,20 +114,29 @@ $tables = [
         last_name VARCHAR(50) NOT NULL,
         email VARCHAR(100) NOT NULL UNIQUE,
         password VARCHAR(255) NOT NULL,
+<<<<<<< HEAD
         role ENUM('user', 'admin', 'store_manager', 'rider') DEFAULT 'user',
         profile_picture VARCHAR(255) DEFAULT NULL,
         reset_token VARCHAR(100) DEFAULT NULL,
         reset_expires DATETIME DEFAULT NULL,
         phone VARCHAR(20) DEFAULT NULL,
+=======
+        role ENUM('user', 'admin') DEFAULT 'user',
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )",
     "CREATE TABLE IF NOT EXISTS categories (
         id INT AUTO_INCREMENT PRIMARY KEY,
+<<<<<<< HEAD
         parent_id INT DEFAULT NULL,
         name VARCHAR(100) NOT NULL,
         icon VARCHAR(50) DEFAULT 'fas fa-box',
         image VARCHAR(255) DEFAULT NULL,
         FOREIGN KEY (parent_id) REFERENCES categories(id) ON DELETE CASCADE
+=======
+        name VARCHAR(100) NOT NULL,
+        icon VARCHAR(50) DEFAULT 'fas fa-box'
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     )",
     "CREATE TABLE IF NOT EXISTS products (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -116,13 +144,17 @@ $tables = [
         name VARCHAR(255) NOT NULL,
         description TEXT,
         price DECIMAL(10,2) NOT NULL,
+<<<<<<< HEAD
         discount_price DECIMAL(10,2) DEFAULT NULL,
         discount_expiry DATETIME DEFAULT NULL,
+=======
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
         image VARCHAR(255) DEFAULT 'default_product.jpg',
         stock INT DEFAULT 0,
         rating DECIMAL(3,1) DEFAULT 0.0,
         is_featured TINYINT(1) DEFAULT 0,
         is_new TINYINT(1) DEFAULT 0,
+<<<<<<< HEAD
         tags VARCHAR(255) DEFAULT '',
         sizes VARCHAR(255) DEFAULT NULL,
         colors VARCHAR(255) DEFAULT NULL,
@@ -175,11 +207,32 @@ $tables = [
         INDEX idx_deleted_at (deleted_at),
         INDEX idx_deadline (delivery_deadline),
         INDEX idx_created_at (created_at)
+=======
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL
+    )",
+    "CREATE TABLE IF NOT EXISTS orders (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        user_id INT,
+        total_amount DECIMAL(10,2) NOT NULL,
+        shipping_name VARCHAR(100),
+        shipping_address TEXT,
+        shipping_city VARCHAR(100),
+        shipping_state VARCHAR(100),
+        shipping_zip VARCHAR(20),
+        shipping_country VARCHAR(100),
+        shipping_method VARCHAR(50),
+        payment_method VARCHAR(50),
+        status ENUM('Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled') DEFAULT 'Pending',
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     )",
     "CREATE TABLE IF NOT EXISTS order_items (
         id INT AUTO_INCREMENT PRIMARY KEY,
         order_id INT,
         product_id INT,
+<<<<<<< HEAD
         size VARCHAR(50) DEFAULT NULL,
         color VARCHAR(50) DEFAULT NULL,
         quantity INT NOT NULL,
@@ -188,17 +241,30 @@ $tables = [
         FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL,
         INDEX idx_order_id (order_id),
         INDEX idx_product_id (product_id)
+=======
+        color VARCHAR(50),
+        quantity INT NOT NULL,
+        price DECIMAL(10,2) NOT NULL,
+        FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE,
+        FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE SET NULL
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     )",
     "CREATE TABLE IF NOT EXISTS product_images (
         id INT AUTO_INCREMENT PRIMARY KEY,
         product_id INT,
         color_name VARCHAR(50) NOT NULL,
+<<<<<<< HEAD
         sizes TEXT NULL,
         image_path VARCHAR(255) NOT NULL,
         price DECIMAL(10,2) NULL DEFAULT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
         INDEX idx_product_id (product_id)
+=======
+        image_path VARCHAR(255) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     )",
     "CREATE TABLE IF NOT EXISTS wishlist (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -207,6 +273,7 @@ $tables = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
         FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+<<<<<<< HEAD
         UNIQUE KEY uniq_user_product (user_id, product_id),
         INDEX idx_product_id (product_id)
     )",
@@ -331,6 +398,9 @@ $tables = [
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
         INDEX idx_user_read (user_id, is_read)
+=======
+        UNIQUE KEY user_product (user_id, product_id)
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     )"
 ];
 
@@ -338,6 +408,15 @@ foreach ($tables as $sql) {
     mysqli_query($conn, $sql);
 }
 
+<<<<<<< HEAD
+=======
+// Add order_notes column if it doesn't exist
+$check_col = mysqli_query($conn, "SHOW COLUMNS FROM orders LIKE 'order_notes'");
+if (mysqli_num_rows($check_col) == 0) {
+    mysqli_query($conn, "ALTER TABLE orders ADD COLUMN order_notes TEXT");
+}
+
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 // Function to sanitize inputs
 function clean_input($conn, $data) {
     $data = trim($data);
@@ -346,6 +425,7 @@ function clean_input($conn, $data) {
     return mysqli_real_escape_string($conn, $data);
 }
 
+<<<<<<< HEAD
 // Check if delivery methods are empty, if so insert defaults
 $dm_check = mysqli_query($conn, "SELECT id FROM delivery_methods LIMIT 1");
 if ($dm_check && mysqli_num_rows($dm_check) == 0) {
@@ -355,10 +435,16 @@ if ($dm_check && mysqli_num_rows($dm_check) == 0) {
 // Check if an admin exists, if not create default admin
 $admin_check = mysqli_query($conn, "SELECT id FROM users WHERE role = 'admin' LIMIT 1");
 if ($admin_check && mysqli_num_rows($admin_check) == 0) {
+=======
+// Check if an admin exists, if not create default admin
+$admin_check = mysqli_query($conn, "SELECT id FROM users WHERE role = 'admin' LIMIT 1");
+if (mysqli_num_rows($admin_check) == 0) {
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     $admin_pass = password_hash('admin123', PASSWORD_DEFAULT);
     mysqli_query($conn, "INSERT INTO users (first_name, last_name, email, password, role) VALUES ('Admin', 'User', 'admin@luxemarket.com', '$admin_pass', 'admin')");
 }
 
+<<<<<<< HEAD
 // Seed default pages if not exist
 $default_pages = [
     [
@@ -446,4 +532,18 @@ if ($expired_orders_res && mysqli_num_rows($expired_orders_res) > 0) {
     }
 }
 
+=======
+// Insert default categories if none exist
+$cat_check = mysqli_query($conn, "SELECT id FROM categories LIMIT 1");
+if (mysqli_num_rows($cat_check) == 0) {
+    mysqli_query($conn, "INSERT INTO categories (name, icon) VALUES ('Electronics', 'fas fa-laptop'), ('Fashion', 'fas fa-tshirt'), ('Home', 'fas fa-home'), ('Beauty', 'fas fa-spa'), ('Sports', 'fas fa-football-ball'), ('Toys', 'fas fa-gamepad'), ('Books', 'fas fa-book')");
+    
+    // Insert default products
+    mysqli_query($conn, "INSERT INTO products (category_id, name, description, price, stock, is_featured) VALUES 
+        (1, 'Premium Wireless Headphones', 'High quality noise cancelling headphones', 299.99, 50, 1),
+        (2, 'Classic Leather Watch', 'Elegant timepiece for any occasion', 150.00, 30, 1),
+        (1, 'Smartphone Pro Max', 'Latest generation smartphone', 999.00, 20, 1),
+        (3, 'Minimalist Desk Lamp', 'Modern LED desk lamp', 45.00, 100, 1)");
+}
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 ?>

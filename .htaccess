@@ -10,6 +10,7 @@ RewriteRule ^ %1 [R=301,L,QSA]
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME}.php -f
 RewriteRule ^(.*)$ $1.php [L,QSA]
+<<<<<<< HEAD
 
 # Gzip compression
 <IfModule mod_deflate.c>
@@ -24,3 +25,5 @@ RewriteRule ^(.*)$ $1.php [L,QSA]
     Header set Expires "Wed, 11 Jan 1984 05:00:00 GMT"
   </FilesMatch>
 </IfModule>
+=======
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444

@@ -1,6 +1,7 @@
 <?php
 require_once 'includes/header.php';
 
+<<<<<<< HEAD
 $query = mysqli_query($conn, "SELECT id, first_name, last_name, email, created_at, (SELECT COUNT(id) FROM orders WHERE user_id = users.id) as order_count FROM users WHERE role = 'user' ORDER BY created_at DESC");
 ?>
 <div class="d-flex justify-content-between align-items-center mb-4">
@@ -114,5 +115,23 @@ function clearSelectedCustomers() {
     updateBulkCustomersToolbar();
 }
 </script>
+=======
+$users_query = mysqli_query($conn, "SELECT * FROM users WHERE role='user' ORDER BY created_at DESC");
+?>
+<h2>Customers</h2>
+<table class="table admin-table mt-3">
+    <thead><tr><th>ID</th><th>Name</th><th>Email</th><th>Joined</th></tr></thead>
+    <tbody>
+        <?php mysqli_data_seek($users_query, 0); while($u = mysqli_fetch_assoc($users_query)): ?>
+        <tr>
+            <td><?= $u['id'] ?></td>
+            <td><?= htmlspecialchars($u['first_name'] . ' ' . $u['last_name']) ?></td>
+            <td><?= htmlspecialchars($u['email']) ?></td>
+            <td><?= date('M d, Y', strtotime($u['created_at'])) ?></td>
+        </tr>
+        <?php endwhile; ?>
+    </tbody>
+</table>
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 
 <?php require_once 'includes/footer.php'; ?>

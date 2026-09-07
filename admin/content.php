@@ -1,5 +1,6 @@
 <?php
 require_once 'includes/header.php';
+<<<<<<< HEAD
 
 // Fetch all pages
 $pages_res = mysqli_query($conn, "SELECT * FROM pages");
@@ -371,4 +372,16 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
+=======
+?>
+<div class="admin-header d-flex justify-content-between align-items-center mb-4">
+    <h2 class="admin-page-title">Website Content</h2>
+</div>
+
+<div class="admin-card p-5 text-center mt-4">
+    <i class="fas fa-tools fa-4x text-muted mb-3" style="opacity: 0.5;"></i>
+    <h3 class="mt-3">Under Construction</h3>
+    <p class="text-muted">The Website Content module is currently being built. Check back soon!</p>
+</div>
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 <?php require_once 'includes/footer.php'; ?>

@@ -7,13 +7,18 @@ if (!isset($_SESSION['user_id'])) {
             <i class='fas fa-heart text-muted mb-3' style='font-size:4rem'></i>
             <h3>Please Log In</h3>
             <p class='text-muted-custom mb-4'>You need to be logged in to view your favorite products.</p>
+<<<<<<< HEAD
             <button class='btn-hero text-decoration-none border-0' onclick='openAuthModal()'>Log In Now</button>
+=======
+            <button class='btn-hero text-decoration-none' onclick='openAuthModal()'>Log In Now</button>
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
           </div>";
     require_once 'includes/footer.php';
     exit;
 }
 
 $uid = $_SESSION['user_id'];
+<<<<<<< HEAD
 $wishlist_product_ids = [];
 $w_q = mysqli_query($conn, "SELECT product_id FROM wishlist WHERE user_id = $uid");
 if ($w_q) {
@@ -22,6 +27,8 @@ if ($w_q) {
     }
 }
 
+=======
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 $query = "SELECT p.*, c.name as cat_name FROM products p 
           INNER JOIN wishlist w ON p.id = w.product_id 
           LEFT JOIN categories c ON p.category_id = c.id 
@@ -30,13 +37,18 @@ $query = "SELECT p.*, c.name as cat_name FROM products p
 
 $result = mysqli_query($conn, $query);
 
+<<<<<<< HEAD
 if (!function_exists('render_product_card')) {
+=======
+// Reusable product card function from index.php
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 function render_product_card($p) {
     global $wishlist_product_ids;
     $is_fav = in_array($p['id'], $wishlist_product_ids ?? []);
     $fav_active = $is_fav ? 'active' : '';
     ?>
     <div class="col-6 col-md-4 col-lg-3">
+<<<<<<< HEAD
         <div class="product-card h-100 shadow-sm d-flex flex-column" style="border-radius: 14px; overflow: hidden; background: var(--card); border: 1px solid var(--border);">
             <a href="product.php?id=<?= $p['id'] ?>" class="text-decoration-none">
             <div class="product-image" style="aspect-ratio: 1 / 1; width: 100%; height: auto; position: relative; overflow: hidden; background: var(--bg3);">
@@ -50,10 +62,26 @@ function render_product_card($p) {
               <?php endif; ?>
               <?php if(isset($p['is_new']) && $p['is_new']): ?>
                   <div class="product-badge bg-success text-white" style="left:auto;right:10px;"><?= __('new_badge') ?></div>
+=======
+        <div class="product-card h-100">
+            <a href="product.php?id=<?= $p['id'] ?>" class="text-decoration-none">
+            <div class="product-image">
+              <?php if(isset($p['image']) && $p['image'] && file_exists('uploads/' . $p['image'])): ?>
+                  <img src="uploads/<?= htmlspecialchars($p['image']) ?>" alt="<?= htmlspecialchars($p['name']) ?>" style="width:100%;height:100%;object-fit:cover;">
+              <?php else: ?>
+                  <i class="fas fa-box text-muted"></i>
+              <?php endif; ?>
+              <?php if($p['stock'] <= 0): ?>
+                  <div class="product-badge sale bg-danger text-white">Out of Stock</div>
+              <?php endif; ?>
+              <?php if(isset($p['is_new']) && $p['is_new']): ?>
+                  <div class="product-badge bg-success text-white" style="left:auto;right:12px;">NEW</div>
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
               <?php endif; ?>
               <div class="product-wishlist <?= $fav_active ?>" onclick="toggleWishlist(<?= $p['id'] ?>, this); event.preventDefault(); event.stopPropagation();"><i class="fas fa-heart"></i></div>
             </div>
         </a>
+<<<<<<< HEAD
         <div class="product-body d-flex flex-column justify-content-between flex-grow-1" style="padding: 0.75rem 0.85rem;">
           <div>
             <div class="product-category" style="font-size: 0.68rem; color: var(--accent); font-weight: 700; text-transform: uppercase; line-height: 1.1; margin-bottom: 2px;"><?= htmlspecialchars($p['cat_name'] ?? 'Uncategorized') ?></div>
@@ -77,13 +105,28 @@ function render_product_card($p) {
             <?php else: ?>
                 <a href="product.php?id=<?= $p['id'] ?>" class="btn-add-cart w-100 text-decoration-none text-center d-flex align-items-center justify-content-center gap-2" style="background: #3b82f6; border: none; border-radius: 8px; color: white !important; font-weight: 700; font-size: 0.78rem; padding: 8px 10px; text-transform: uppercase; transition: all 0.2s ease; box-shadow: 0 3px 10px rgba(59,130,246,0.25);"><i class="fas fa-shopping-cart" style="font-size:0.75rem;"></i> <?= __('add_to_cart') ?></a>
             <?php endif; ?>
+=======
+        <div class="product-body d-flex flex-column" style="height: calc(100% - 220px);">
+          <div class="product-category"><?= htmlspecialchars($p['cat_name'] ?? 'Uncategorized') ?></div>
+          <a href="product.php?id=<?= $p['id'] ?>" class="text-decoration-none"><div class="product-name"><?= htmlspecialchars($p['name']) ?></div></a>
+          <div class="mt-auto d-flex justify-content-between align-items-center pt-2">
+            <div class="product-price"><?= number_format($p['price'], 0) ?> RFW</div>
+            <form action="core/actions.php" method="POST" class="m-0">
+                <input type="hidden" name="action" value="add_to_cart">
+                <input type="hidden" name="product_id" value="<?= $p['id'] ?>">
+                <button type="submit" class="btn btn-sm btn-outline-dark rounded-circle" style="width:36px;height:36px;padding:0;" <?= $p['stock'] <= 0 ? 'disabled' : '' ?>><i class="fas fa-plus"></i></button>
+            </form>
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
           </div>
         </div>
       </div>
     </div>
     <?php
 }
+<<<<<<< HEAD
 }
+=======
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 ?>
 
 <div class="container py-5">

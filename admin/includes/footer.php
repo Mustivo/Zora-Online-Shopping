@@ -1,6 +1,7 @@
     </div> <!-- .admin-main -->
 </div> <!-- .admin-layout -->
 
+<<<<<<< HEAD
 <script>
 document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('.admin-table').forEach(function(table) {
@@ -74,5 +75,8 @@ $(document).ready(function() {
     }
 });
 </script>
+=======
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 </body>
 </html>

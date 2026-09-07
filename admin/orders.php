@@ -1,6 +1,7 @@
 <?php
 require_once 'includes/header.php';
 
+<<<<<<< HEAD
 $orders_query = mysqli_query($conn, "SELECT o.*, u.first_name, u.last_name, u.email as user_email, d.first_name as del_fname, d.last_name as del_lname FROM orders o LEFT JOIN users u ON o.user_id = u.id LEFT JOIN users d ON o.delivered_by = d.id WHERE o.deleted_at IS NULL ORDER BY o.created_at DESC");
 
 // Fetch Riders
@@ -9,6 +10,9 @@ $riders = [];
 while($r = mysqli_fetch_assoc($riders_query)) {
     $riders[] = $r;
 }
+=======
+$orders_query = mysqli_query($conn, "SELECT o.*, u.first_name, u.last_name FROM orders o JOIN users u ON o.user_id = u.id ORDER BY o.created_at DESC");
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 
 // Fetch order items to embed
 $order_items = [];
@@ -16,6 +20,7 @@ $items_query = mysqli_query($conn, "SELECT oi.*, p.name as product_name, p.image
 while($item = mysqli_fetch_assoc($items_query)) {
     $order_items[$item['order_id']][] = $item;
 }
+<<<<<<< HEAD
 $settings_q = mysqli_query($conn, "SELECT * FROM settings");
 $global_settings = [];
 while($row = mysqli_fetch_assoc($settings_q)) {
@@ -323,11 +328,39 @@ document.addEventListener("DOMContentLoaded", function() { toggleOrderSettings()
                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Move to Trash"><i class="fas fa-trash-alt"></i></button>
                     </form>
                 </div>
+=======
+?>
+<h2>Orders</h2>
+<table class="table admin-table mt-3">
+    <thead><tr><th>ID</th><th>Customer</th><th>Total</th><th>Status</th><th>Date</th><th>Action</th></tr></thead>
+    <tbody>
+        <?php mysqli_data_seek($orders_query, 0); while($o = mysqli_fetch_assoc($orders_query)): ?>
+        <tr>
+            <td>#<?= $o['id'] ?></td>
+            <td><?= htmlspecialchars($o['first_name'] . ' ' . $o['last_name']) ?></td>
+            <td>$<?= number_format($o['total_amount'], 2) ?></td>
+            <td><?= $o['status'] ?></td>
+            <td><?= date('M d, Y', strtotime($o['created_at'])) ?></td>
+            <td>
+                <button class="btn btn-sm btn-info text-white" onclick='viewOrder(<?= json_encode($order_items[$o['id']] ?? []) ?>, <?= json_encode($o) ?>)'><i class="fas fa-eye"></i></button>
+                <form action="actions.php" method="POST" class="d-inline">
+                    <input type="hidden" name="action" value="update_order">
+                    <input type="hidden" name="order_id" value="<?= $o['id'] ?>">
+                    <select name="status" class="form-select form-select-sm d-inline w-auto" onchange="this.form.submit()">
+                        <option <?= $o['status']=='Pending'?'selected':'' ?>>Pending</option>
+                        <option <?= $o['status']=='Processing'?'selected':'' ?>>Processing</option>
+                        <option <?= $o['status']=='Shipped'?'selected':'' ?>>Shipped</option>
+                        <option <?= $o['status']=='Delivered'?'selected':'' ?>>Delivered</option>
+                        <option <?= $o['status']=='Cancelled'?'selected':'' ?>>Cancelled</option>
+                    </select>
+                </form>
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
             </td>
         </tr>
         <?php endwhile; ?>
     </tbody>
 </table>
+<<<<<<< HEAD
 </div>
 </form>
 
@@ -396,12 +429,48 @@ document.addEventListener("DOMContentLoaded", function() { toggleOrderSettings()
         </div>
         <div class="modal-footer border-0" style="padding: 1.5rem;">
           <button type="button" class="btn btn-secondary rounded-pill px-4" data-bs-dismiss="modal">Close</button>
+=======
+
+<!-- View Order Modal -->
+<div class="modal fade" id="viewOrderModal" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content" style="background:var(--bg2); color:var(--text)">
+        <div class="modal-header border-0">
+          <h5 class="modal-title">Order #<span id="vo_id"></span> Details</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <strong>Customer:</strong> <span id="vo_customer"></span><br>
+                    <strong>Date:</strong> <span id="vo_date"></span>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <strong>Total:</strong> $<span id="vo_total"></span><br>
+                    <strong>Status:</strong> <span id="vo_status"></span>
+                </div>
+            </div>
+            <h6>Shipping Address</h6>
+            <div class="mb-3" id="vo_shipping"></div>
+            
+            <h6>Items</h6>
+            <table class="table admin-table table-sm">
+                <thead>
+                    <tr><th>Product</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr>
+                </thead>
+                <tbody id="vo_items"></tbody>
+            </table>
+        </div>
+        <div class="modal-footer border-0">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
         </div>
     </div>
   </div>
 </div>
 
 <script>
+<<<<<<< HEAD
 let currentViewingOrderId = null;
 
 function toggleSelectAllOrders(master) {
@@ -507,6 +576,8 @@ function deleteSelectedOrderItems() {
     });
 }
 
+=======
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 function escapeHtml(unsafe) {
     if (!unsafe) return '';
     return unsafe
@@ -517,6 +588,7 @@ function escapeHtml(unsafe) {
          .replace(/'/g, "&#039;");
 }
 
+<<<<<<< HEAD
 function showLocation(address, city, state, zip, country) {
     let locStr = "Shipping Location:\n\n";
     if (address) locStr += "Address: " + address + "\n";
@@ -535,10 +607,16 @@ function viewOrder(items, order) {
     document.getElementById('vo_customer').innerText = c_name;
     document.getElementById('vo_email').innerText = c_email || 'N/A';
     document.getElementById('vo_phone').innerText = order.shipping_phone || 'N/A';
+=======
+function viewOrder(items, order) {
+    document.getElementById('vo_id').innerText = order.id;
+    document.getElementById('vo_customer').innerText = order.first_name + ' ' + order.last_name;
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     document.getElementById('vo_date').innerText = order.created_at;
     document.getElementById('vo_total').innerText = parseFloat(order.total_amount).toFixed(2);
     document.getElementById('vo_status').innerText = order.status;
     
+<<<<<<< HEAD
     let gateStr = order.shipping_gate ? escapeHtml(order.shipping_gate) + '<br>' : '';
     let addr = '<div class="d-flex align-items-start mb-2"><i class="fas fa-user text-muted mt-1 me-2" style="width:16px;"></i> <span><strong>' + escapeHtml(order.shipping_name) + '</strong></span></div>' + 
                '<div class="d-flex align-items-start mb-2"><i class="fas fa-map-marker-alt text-muted mt-1 me-2" style="width:16px;"></i> <span>' + escapeHtml(order.shipping_address) + '<br>' + 
@@ -648,6 +726,27 @@ function viewOrder(items, order) {
         }
     }
 
+=======
+    let addr = escapeHtml(order.shipping_name) + '<br>' + 
+               escapeHtml(order.shipping_address) + '<br>' + 
+               escapeHtml(order.shipping_city) + ', ' + escapeHtml(order.shipping_state) + ' ' + escapeHtml(order.shipping_zip) + '<br>' + 
+               escapeHtml(order.shipping_country);
+    document.getElementById('vo_shipping').innerHTML = addr;
+    
+    let html = '';
+    items.forEach(item => {
+        let sub = (parseFloat(item.price) * parseInt(item.quantity)).toFixed(2);
+        let name = escapeHtml(item.product_name) || 'Unknown Product';
+        html += `<tr>
+            <td>${name}</td>
+            <td>$${parseFloat(item.price).toFixed(2)}</td>
+            <td>${item.quantity}</td>
+            <td>$${sub}</td>
+        </tr>`;
+    });
+    document.getElementById('vo_items').innerHTML = html;
+    
+>>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     new bootstrap.Modal(document.getElementById('viewOrderModal')).show();
 }
 </script>
