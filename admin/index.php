@@ -7,12 +7,6 @@ $total_orders = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FRO
 $total_customers = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM users WHERE role='user'"))['c'] ?? 0;
 $total_revenue = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(total_amount) as c FROM orders WHERE status != 'Cancelled'"))['c'] ?? 0;
 
-<<<<<<< HEAD
-$total_stock = mysqli_fetch_assoc(mysqli_query($conn, "SELECT SUM(stock) as c FROM products"))['c'] ?? 0;
-$total_out_of_stock = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as c FROM products WHERE stock <= 0"))['c'] ?? 0;
-
-=======
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 // 5. Recent Orders
 $recent_orders = mysqli_query($conn, "SELECT id, total_amount, status, created_at FROM orders ORDER BY created_at DESC LIMIT 5");
 
@@ -31,15 +25,6 @@ $chart_data = array_reverse($chart_data);
 $low_stock = mysqli_query($conn, "SELECT name, stock, image FROM products WHERE stock < 10 ORDER BY stock ASC LIMIT 5");
 
 // 8. Pending Deliveries
-<<<<<<< HEAD
-$pending_deliveries = mysqli_query($conn, "SELECT id, order_number, total_amount, status, created_at FROM orders WHERE status IN ('Pending', 'Processing') ORDER BY created_at ASC LIMIT 5");
-
-// 9. Notifications (Dynamic Feed)
-$notifs = [];
-$n_orders = mysqli_query($conn, "SELECT id, order_number, created_at FROM orders ORDER BY created_at DESC LIMIT 5");
-while($r = mysqli_fetch_assoc($n_orders)) {
-    $notifs[] = ['type' => 'order', 'icon' => 'fas fa-shopping-cart text-primary', 'msg' => "New order " . ($r['order_number'] ?: "#{$r['id']}") . " placed.", 'time' => $r['created_at']];
-=======
 $pending_deliveries = mysqli_query($conn, "SELECT id, total_amount, status, created_at FROM orders WHERE status IN ('Pending', 'Processing') ORDER BY created_at ASC LIMIT 5");
 
 // 9. Notifications (Dynamic Feed)
@@ -47,7 +32,6 @@ $notifs = [];
 $n_orders = mysqli_query($conn, "SELECT id, created_at FROM orders ORDER BY created_at DESC LIMIT 5");
 while($r = mysqli_fetch_assoc($n_orders)) {
     $notifs[] = ['type' => 'order', 'icon' => 'fas fa-shopping-cart text-primary', 'msg' => "New order #{$r['id']} placed.", 'time' => $r['created_at']];
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 }
 $n_users = mysqli_query($conn, "SELECT first_name, last_name, created_at FROM users WHERE role='user' ORDER BY created_at DESC LIMIT 5");
 while($r = mysqli_fetch_assoc($n_users)) {
@@ -62,29 +46,6 @@ $recent_customers = mysqli_query($conn, "SELECT first_name, last_name, email, cr
 // 12. Top Selling Products
 $top_selling = mysqli_query($conn, "SELECT p.name, p.image, SUM(oi.quantity) as sold FROM order_items oi JOIN products p ON oi.product_id = p.id GROUP BY oi.product_id ORDER BY sold DESC LIMIT 5");
 
-<<<<<<< HEAD
-if (!function_exists('time_elapsed_string')) {
-    function time_elapsed_string($datetime, $full = false) {
-        $now = new DateTime;
-        $ago = new DateTime($datetime);
-        $diff = $now->diff($ago);
-        if ($diff->d > 0) return $diff->d . "d ago";
-        if ($diff->h > 0) return $diff->h . "h ago";
-        if ($diff->i > 0) return $diff->i . "m ago";
-        return "Just now";
-    }
-}
-if (!function_exists('status_color')) {
-    function status_color($status) {
-        switch(strtolower($status)) {
-            case 'pending': return 'warning';
-            case 'processing': return 'info';
-            case 'shipped': return 'primary';
-            case 'delivered': return 'success';
-            case 'cancelled': return 'danger';
-            default: return 'secondary';
-        }
-=======
 function time_elapsed_string($datetime, $full = false) {
     $now = new DateTime;
     $ago = new DateTime($datetime);
@@ -102,24 +63,15 @@ function status_color($status) {
         case 'delivered': return 'success';
         case 'cancelled': return 'danger';
         default: return 'secondary';
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     }
 }
 ?>
 
-<<<<<<< HEAD
-<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
-
-<style>
-.dashboard-card {
-    background: var(--card);
-=======
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <style>
 .dashboard-card {
     background: #fff;
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     border: 1px solid var(--border);
     border-radius: 12px;
     padding: 1.5rem;
@@ -131,11 +83,7 @@ function status_color($status) {
     align-items: center;
     gap: 1.2rem;
     padding: 1.5rem;
-<<<<<<< HEAD
-    background: var(--card);
-=======
     background: #fff;
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
     border-radius: 12px;
     border: 1px solid var(--border);
     box-shadow: 0 4px 12px rgba(0,0,0,0.02);
@@ -178,15 +126,9 @@ function status_color($status) {
 .quick-action-btn:hover i { color: #fff; }
 </style>
 
-<<<<<<< HEAD
-
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2 class="admin-page-title"><i class="fas fa-tachometer-alt me-2 text-accent"></i> Dashboard Overview</h2>
-=======
 <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="admin-page-title" style="color: var(--primary);">Dashboard Overview</h2>
     <span class="text-muted" style="font-size: 0.85rem;"><i class="fas fa-calendar-alt me-1"></i> <?= date('l, F j, Y') ?></span>
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 </div>
 
 <!-- 1-4: TOP KPIs -->
@@ -222,13 +164,8 @@ function status_color($status) {
         <div class="kpi-card accent">
             <div class="kpi-icon info"><i class="fas fa-money-bill-wave"></i></div>
             <div>
-<<<<<<< HEAD
-                <div class="kpi-value"><?= number_format($total_revenue, 0) ?></div>
-                <div class="kpi-label">Total Revenue (RFW)</div>
-=======
                 <div class="kpi-value"><?= number_format($total_revenue, 2) ?> <span style="font-size: 1rem; color: var(--text3);">FRW</span></div>
                 <div class="kpi-label">Total Revenue</div>
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
             </div>
         </div>
     </div>
@@ -239,11 +176,7 @@ function status_color($status) {
     <div class="col-lg-8">
         <div class="dashboard-card">
             <div class="section-head">Revenue Analytics</div>
-<<<<<<< HEAD
-            <div id="salesChart" style="min-height: 300px;"></div>
-=======
             <canvas id="salesChart" height="100"></canvas>
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
         </div>
     </div>
     <!-- 10. QUICK ACTIONS -->
@@ -269,17 +202,6 @@ function status_color($status) {
                 <a href="orders.php" class="btn btn-sm btn-outline-primary" style="font-size: 0.75rem;">View All</a>
             </div>
             <div class="table-responsive">
-<<<<<<< HEAD
-                <table class="table  align-middle">
-                    <thead class="text-uppercase text-muted" style="font-size: 0.7rem; letter-spacing: 1px;">
-                        <tr><th>#</th><th>Order ID</th><th>Date</th><th>Amount</th><th>Status</th></tr>
-                    </thead>
-                    <tbody>
-                        <?php if(mysqli_num_rows($recent_orders) > 0): ?>
-                            <?php $row_count = 1; while($order = mysqli_fetch_assoc($recent_orders)): ?>
-                            <tr>
-                                <td class="text-muted fw-bold"><?= $row_count++ ?></td>
-=======
                 <table class="table table-hover align-middle">
                     <thead class="text-uppercase text-muted" style="font-size: 0.7rem; letter-spacing: 1px;">
                         <tr><th>Order ID</th><th>Date</th><th>Amount</th><th>Status</th></tr>
@@ -288,7 +210,6 @@ function status_color($status) {
                         <?php if(mysqli_num_rows($recent_orders) > 0): ?>
                             <?php while($order = mysqli_fetch_assoc($recent_orders)): ?>
                             <tr>
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
                                 <td class="fw-bold" style="color: var(--primary);">#ORD-<?= sprintf('%04d', $order['id']) ?></td>
                                 <td style="font-size: 0.85rem;"><?= date('M j, Y', strtotime($order['created_at'])) ?></td>
                                 <td class="fw-bold" style="color: var(--accent);"><?= number_format($order['total_amount'], 2) ?> FRW</td>
@@ -296,11 +217,7 @@ function status_color($status) {
                             </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
-<<<<<<< HEAD
-                            <tr><td colspan="5" class="text-center py-3 text-muted">No orders found.</td></tr>
-=======
                             <tr><td colspan="4" class="text-center py-3 text-muted">No orders found.</td></tr>
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -336,11 +253,7 @@ function status_color($status) {
             <?php if(mysqli_num_rows($top_selling) > 0): ?>
                 <?php while($p = mysqli_fetch_assoc($top_selling)): ?>
                 <div class="list-item">
-<<<<<<< HEAD
-                    <img src="../uploads/<?= $p['image'] ?>" class="list-img" alt="<?= htmlspecialchars($p['name']) ?>" loading="lazy">
-=======
                     <img src="../uploads/<?= $p['image'] ?>" class="list-img" alt="">
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
                     <div class="list-info">
                         <div class="list-title text-truncate" style="max-width: 150px;"><?= htmlspecialchars($p['name']) ?></div>
                         <div class="list-sub" style="color: var(--accent); fw-bold"><?= $p['sold'] ?> units sold</div>
@@ -359,11 +272,7 @@ function status_color($status) {
             <?php if(mysqli_num_rows($low_stock) > 0): ?>
                 <?php while($p = mysqli_fetch_assoc($low_stock)): ?>
                 <div class="list-item">
-<<<<<<< HEAD
-                    <img src="../uploads/<?= $p['image'] ?>" class="list-img" alt="<?= htmlspecialchars($p['name']) ?>" loading="lazy">
-=======
                     <img src="../uploads/<?= $p['image'] ?>" class="list-img" alt="">
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
                     <div class="list-info">
                         <div class="list-title text-truncate" style="max-width: 150px;"><?= htmlspecialchars($p['name']) ?></div>
                         <div class="list-sub text-danger fw-bold"><i class="fas fa-exclamation-triangle me-1"></i> Only <?= $p['stock'] ?> left</div>
@@ -384,11 +293,7 @@ function status_color($status) {
                 <div class="list-item">
                     <div style="width: 40px; height: 40px; border-radius: 8px; background: rgba(251, 124, 0, 0.1); color: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.2rem;"><i class="fas fa-truck"></i></div>
                     <div class="list-info">
-<<<<<<< HEAD
-                        <div class="list-title">Order <?= $o['order_number'] ?: '#' . $o['id'] ?></div>
-=======
                         <div class="list-title">Order #<?= $o['id'] ?></div>
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
                         <div class="list-sub"><?= date('M j', strtotime($o['created_at'])) ?> &bull; <span class="text-<?= status_color($o['status']) ?> fw-bold"><?= $o['status'] ?></span></div>
                     </div>
                 </div>
@@ -409,17 +314,6 @@ function status_color($status) {
                 <a href="customers.php" class="btn btn-sm btn-outline-primary" style="font-size: 0.75rem;">View All</a>
             </div>
             <div class="table-responsive">
-<<<<<<< HEAD
-                <table class="table  align-middle mb-0">
-                    <thead class="text-uppercase text-muted" style="font-size: 0.7rem; letter-spacing: 1px;">
-                        <tr><th>#</th><th>Name</th><th>Email</th><th>Joined</th></tr>
-                    </thead>
-                    <tbody>
-                        <?php if(mysqli_num_rows($recent_customers) > 0): ?>
-                            <?php $row_count2 = 1; while($c = mysqli_fetch_assoc($recent_customers)): ?>
-                            <tr>
-                                <td class="text-muted fw-bold"><?= $row_count2++ ?></td>
-=======
                 <table class="table table-hover align-middle mb-0">
                     <thead class="text-uppercase text-muted" style="font-size: 0.7rem; letter-spacing: 1px;">
                         <tr><th>Name</th><th>Email</th><th>Joined</th></tr>
@@ -428,18 +322,13 @@ function status_color($status) {
                         <?php if(mysqli_num_rows($recent_customers) > 0): ?>
                             <?php while($c = mysqli_fetch_assoc($recent_customers)): ?>
                             <tr>
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
                                 <td class="fw-bold" style="color: var(--primary);"><i class="fas fa-user-circle me-2 text-muted"></i><?= htmlspecialchars($c['first_name'] . ' ' . $c['last_name']) ?></td>
                                 <td><?= htmlspecialchars($c['email']) ?></td>
                                 <td style="font-size: 0.85rem;"><?= date('M j, Y', strtotime($c['created_at'])) ?></td>
                             </tr>
                             <?php endwhile; ?>
                         <?php else: ?>
-<<<<<<< HEAD
-                            <tr><td colspan="4" class="text-center py-3 text-muted">No customers found.</td></tr>
-=======
                             <tr><td colspan="3" class="text-center py-3 text-muted">No customers found.</td></tr>
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
                         <?php endif; ?>
                     </tbody>
                 </table>
@@ -449,69 +338,6 @@ function status_color($status) {
 </div>
 
 <script>
-<<<<<<< HEAD
-const chartLabels = <?= json_encode($chart_labels) ?>;
-const chartData = <?= json_encode($chart_data) ?>;
-
-var options = {
-    series: [{
-        name: 'Revenue',
-        data: chartData
-    }],
-    chart: {
-        type: 'area',
-        height: 320,
-        fontFamily: "'DM Sans', sans-serif",
-        toolbar: { show: false },
-        animations: { enabled: true, easing: 'easeinout', speed: 800 }
-    },
-    colors: ['#012a5e'], // Zora primary color
-    fill: {
-        type: 'gradient',
-        gradient: {
-            shadeIntensity: 1,
-            opacityFrom: 0.4,
-            opacityTo: 0.05,
-            stops: [0, 90, 100]
-        }
-    },
-    dataLabels: { enabled: false },
-    stroke: { curve: 'smooth', width: 3 },
-    xaxis: {
-        categories: chartLabels,
-        axisBorder: { show: false },
-        axisTicks: { show: false },
-        labels: { style: { colors: '#94a3b8', fontSize: '12px' } }
-    },
-    yaxis: {
-        labels: {
-            style: { colors: '#94a3b8', fontSize: '12px' },
-            formatter: (value) => { return value.toLocaleString() + ' FRW' }
-        }
-    },
-    grid: {
-        borderColor: 'var(--border)',
-        strokeDashArray: 4,
-        yaxis: { lines: { show: true } },
-        padding: { top: 0, right: 0, bottom: 0, left: 10 }
-    },
-    tooltip: {
-        theme: 'light',
-        y: { formatter: function (val) { return val.toLocaleString() + " FRW" } },
-        marker: { show: false }
-    },
-    markers: {
-        size: 5,
-        colors: ['#fb7c00'], // Zora accent color
-        strokeColors: '#fff',
-        strokeWidth: 2,
-        hover: { size: 7 }
-    }
-};
-
-var chart = new ApexCharts(document.querySelector("#salesChart"), options);
-chart.render();
-=======
 const ctx = document.getElementById('salesChart').getContext('2d');
 
 // Zora brand colors
@@ -573,7 +399,6 @@ new Chart(ctx, {
         }
     }
 });
->>>>>>> cce12f54b13cc026fb7227be0113b7f5b024d444
 </script>
 
 <?php require_once 'includes/footer.php'; ?>
