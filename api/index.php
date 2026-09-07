@@ -1,9 +1,11 @@
 <?php
 // require_once './core/config.php';
+require_once dirname(__DIR__) . '/includes/config.php';
 $page_title = "Zora Online Shopping | Latest Fashion in Rwanda";
 $meta_desc = "Discover the latest fashion trends at Zora Online Shopping. Shop high-quality clothes, shoes, and accessories with fast delivery in Kigali, Rwanda.";
 $meta_keywords = "Online shopping Rwanda, Zora shop Rwanda, buy clothes online Kigali, women's fashion Rwanda";
 // require_once './includes/header.php';
+require_once dirname(__DIR__) . '/includes/header.php';
 ?>
 <!-- WebSite & LocalBusiness Schema -->
 <script type="application/ld+json">

@@ -1,6 +1,6 @@
 <?php
-require_once dirname(__DIR__) . '../core/config.php';
-require_once '../core/config.php';
+require_once dirname(__DIR__) . '/core/config.php';
+// require_once 'core/config.php';
 $page_query = mysqli_query($conn, "SELECT * FROM pages WHERE slug = 'about' LIMIT 1");
 $custom_page = ($page_query && mysqli_num_rows($page_query) > 0) ? mysqli_fetch_assoc($page_query) : null;
 
@@ -143,4 +143,4 @@ $has_custom_body = !empty($custom_page['content']) && trim($custom_page['content
   </div>
 </section>
 
-<?php require_once '../includes/footer.php'; ?>
+<?php require_once 'includes/footer.php'; ?>
